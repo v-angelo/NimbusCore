@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Header";
 import BgImages from "./components/BgImages";
 import SearchBar from "./components/SearchBar";
@@ -8,6 +8,10 @@ import ErrorMsg from "./components/ErrorMsg";
 import Dashboard from "./components/Dashboard";
 
 function App() {
+  useEffect(() => {
+    // searchCities("london");
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* background images */}
@@ -24,7 +28,7 @@ function App() {
           <ToggleTemp /> */}
         </section>
 
-        {/* main content */}
+        {/* dashboard */}
         <section className="space-y-8">
           {/* <LoadingSpinner />
           <ErrorMsg /> */}
