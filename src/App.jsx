@@ -6,11 +6,19 @@ import ToggleTemp from "./components/ToggleTemp";
 import LoadingSpinner from "./components/LoadingSpinner";
 import ErrorMsg from "./components/ErrorMsg";
 import Dashboard from "./components/Dashboard";
+import { useWeather } from "./hooks/useWeather";
 
 function App() {
-  useEffect(() => {
-    // searchCities("london");
-  }, []);
+  const {
+    currentWeather,
+    forecast,
+    loading,
+    error,
+    unit,
+    fetchWeatherByCity,
+    fetchWeatherByLocation,
+    toggleUnit,
+  } = useWeather();
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -24,17 +32,22 @@ function App() {
 
         {/* search and temp toggle */}
         <section className="mb-12 flex flex-col items-center justify-center space-y-6 lg:flex-row lg:space-y-0 lg:space-x-6">
-          {/* <SearchBar />
-          <ToggleTemp /> */}
+          <SearchBar
+            onSearch={fetchWeatherByCity}
+            onLocationSearch={fetchWeatherByLocation}
+            loading={loading}
+          />
+          <ToggleTemp />
         </section>
 
         {/* dashboard */}
-        <section className="space-y-8">
-          {/* <LoadingSpinner />
-          <ErrorMsg /> */}
+        {/* <section className="space-y-8">
+          {loading && <LoadingSpinner />}
 
-          <Dashboard />
-        </section>
+          {error && !loading && <ErrorMsg />}
+
+          {currentWeather && !loading && <Dashboard forecast={forecast} />}
+        </section> */}
       </main>
     </div>
   );
