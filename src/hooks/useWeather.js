@@ -77,7 +77,7 @@ export const useWeather = () => {
 
   // display default weather when loading app
   useEffect(() => {
-    fetchWeatherByCity("Delhi");
+    fetchWeatherByCity("london");
   }, []);
 
   return {

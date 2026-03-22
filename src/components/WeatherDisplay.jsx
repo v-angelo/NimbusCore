@@ -1,7 +1,55 @@
 import React from "react";
-import { MapPin, Sunrise, Sunset } from "lucide-react";
+import {
+  MapPin,
+  Sunrise,
+  Sunset,
+  Eye,
+  Wind,
+  Droplets,
+  Gauge,
+  Thermometer,
+} from "lucide-react";
 
-function WeatherDisplay() {
+import { formatTemp, getWeatherIcon } from "../utilities/weatherUtilities";
+import * as LucideIcons from "lucide-react";
+
+function WeatherDisplay({ weatherData, unit }) {
+  const iconName = getWeatherIcon(weatherData.weather[0]);
+  const iconComponent = LucideIcons[iconName] || LucideIcons.Cloud;
+
+  const weatherStats = [
+    {
+      icon: Eye,
+      label: "Visibility",
+      value: `${(weatherData.visibility / 1000).toFixed(1)} km`,
+      color: "text-cyan-300",
+    },
+    {
+      icon: Wind,
+      label: "Wind Speed",
+      value: `${weatherData.wind.speed.toFixed(1)} m/s`,
+      color: "text-emerald-300",
+    },
+    {
+      icon: Droplets,
+      label: "Humidity",
+      value: `${weatherData.main.humidity}%`,
+      color: "text-teal-300",
+    },
+    {
+      icon: Gauge,
+      label: "Pressure",
+      value: `${weatherData.main.pressure} hPa`,
+      color: "text-purple-300",
+    },
+    {
+      icon: Thermometer,
+      label: "Feels Like",
+      value: `${formatTemp(weatherData.main.feels_like, unit)}°${unit}`,
+      color: "text-blue-300",
+    },
+  ];
+
   return (
     <div className="rounded-3xl border border-white/20 bg-white/10 p-8 shadow-2xl backdrop-blur-lg transition-all duration-500 hover:bg-white/15">
       {/* header */}

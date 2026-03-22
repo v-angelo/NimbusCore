@@ -12,7 +12,7 @@ function LoadingSpinner() {
             {/* inner ring */}
             <div className="absolute inset-2 h-12 w-12 animate-spin rounded-full border-3 border-blue-200/30 border-t-blue-200/80 [animation-delay:150ms]"></div>
 
-            {/* center of the rings */}
+            {/* center */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="h-3 w-3 animate-pulse rounded-full bg-white/60"></div>
             </div>

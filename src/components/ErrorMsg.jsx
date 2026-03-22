@@ -1,7 +1,7 @@
 import { AlertCircle, RefreshCw } from "lucide-react";
 import React from "react";
 
-function ErrorMsg() {
+function ErrorMsg({ message, onRetry }) {
   return (
     <section className="mx-auto max-w-2xl">
       <div className="rounded-3xl border border-red-500/20 bg-red-500/60 p-8 shadow-2xl backdrop-blur-xs">
@@ -14,13 +14,18 @@ function ErrorMsg() {
             Something Went Wrong!!
           </h3>
         </div>
-        <p className="mb-6 leading-relaxed text-white/80">Message</p>
+        <p className="mb-6 leading-relaxed text-white/80">{message}</p>
 
-        {/* button */}
-        <button className="flex cursor-pointer items-center space-x-3 rounded-2xl border border-white/20 bg-white/10 px-6 py-3 text-white transition-all duration-150 hover:scale-105 hover:bg-white/10 hover:shadow-lg">
-          <RefreshCw className="h-5 w-5" />
-          <span className="font-medium">Try Again</span>
-        </button>
+        {/* retry button */}
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="flex cursor-pointer items-center space-x-3 rounded-2xl border border-white/20 bg-white/10 px-6 py-3 text-white transition-all duration-150 hover:scale-105 hover:bg-white/10 hover:shadow-lg"
+          >
+            <RefreshCw className="h-5 w-5" />
+            <span className="font-medium">Try Again</span>
+          </button>
+        )}
       </div>
     </section>
   );

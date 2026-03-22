@@ -14,21 +14,22 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response) {
       const status = error.response.status;
+      let errMsg = "";
       if (status == 401) {
-        console.log(
-          "Invalid API Key! Please check your openweather api configuration.",
-        );
+        errMsg =
+          "Invalid API Key! Please check your openweather api configuration.";
       } else if (status == 404) {
-        console.log("Invalid Input! Try again with another input.");
+        errMsg = "Invalid Input! Try again with another input.";
       } else if (status == 500) {
-        console.log("Server Errror!");
+        errMsg = "Server Errror!";
       } else if (error.request) {
-        console.log(
-          "Weather service is temporarily unavailable. Please try again after sometime.",
-        );
+        errMsg =
+          "Weather service is temporarily unavailable. Please try again after sometime.";
       } else {
         console.log("Error: " + error.message);
       }
+      errMsg && console.log(errMsg);
+      error.msg = errMsg;
       return Promise.reject(error);
     }
   },

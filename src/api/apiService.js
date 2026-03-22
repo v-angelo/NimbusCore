@@ -5,7 +5,7 @@ const apiService = async (url) => {
     const response = await axiosInstance.get(url);
     return response;
   } catch (err) {
-    throw new Error(`Network error: ${err.message}`);
+    throw new Error(`Error: ${err.msg}`);
   }
 };
 

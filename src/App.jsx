@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Header from "./components/Header";
 import BgImages from "./components/BgImages";
 import SearchBar from "./components/SearchBar";
@@ -20,6 +20,14 @@ function App() {
     toggleUnit,
   } = useWeather();
 
+  const handleRetry = () => {
+    if (currentWeather) {
+      fetchWeatherByCity(currentWeather.name);
+    } else {
+      fetchWeatherByCity("london");
+    }
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* background images */}
@@ -37,17 +45,25 @@ function App() {
             onLocationSearch={fetchWeatherByLocation}
             loading={loading}
           />
-          <ToggleTemp />
+          <ToggleTemp unit={unit} onToggle={toggleUnit} />
         </section>
 
         {/* dashboard */}
-        {/* <section className="space-y-8">
+        <section className="space-y-8">
           {loading && <LoadingSpinner />}
 
-          {error && !loading && <ErrorMsg />}
+          {error && !loading && (
+            <ErrorMsg message={error} onRetry={handleRetry} />
+          )}
 
-          {currentWeather && !loading && <Dashboard forecast={forecast} />}
-        </section> */}
+          {currentWeather && !loading && (
+            <Dashboard
+              forecast={forecast}
+              weatherData={currentWeather}
+              unit={unit}
+            />
+          )}
+        </section>
       </main>
     </div>
   );
