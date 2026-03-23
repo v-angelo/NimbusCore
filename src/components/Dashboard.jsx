@@ -12,7 +12,7 @@ function Dashboard({ forecast, weatherData, unit }) {
 
       {/* weather forecast display */}
       <article className="xl:col-span-1">
-        {forecast && <WeatherForecast />}
+        {forecast && <WeatherForecast forecast={forecast} unit={unit} />}
       </article>
     </section>
   );

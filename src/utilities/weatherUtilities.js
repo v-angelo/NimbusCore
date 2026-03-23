@@ -21,7 +21,7 @@ export const getWeatherIcon = (weather) => {
 
 export const formatTemp = (temp, unit) => {
   if (unit === "F") {
-    return Math.random((temp * 9) / 5 + 32);
+    return Math.round(temp * (9 / 5) + 32);
   }
 
   return Math.round(temp);
@@ -62,5 +62,7 @@ export const getWindDirection = (deg) => {
     "NNW",
   ];
 
-  return directions[Math.round(deg / 22.5) % 16];
+  const normalizedDeg = ((deg % 360) + 360) % 360;
+
+  return directions[Math.round(normalizedDeg / 22.5) % 16];
 };

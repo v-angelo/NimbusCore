@@ -5,48 +5,60 @@ import {
   Sunset,
   Eye,
   Wind,
+  Waves,
   Droplets,
   Gauge,
   Thermometer,
 } from "lucide-react";
 
-import { formatTemp, getWeatherIcon } from "../utilities/weatherUtilities";
+import {
+  formatTemp,
+  formatTime,
+  getWeatherIcon,
+  getWindDirection,
+} from "../utilities/weatherUtilities";
 import * as LucideIcons from "lucide-react";
 
 function WeatherDisplay({ weatherData, unit }) {
   const iconName = getWeatherIcon(weatherData.weather[0]);
-  const iconComponent = LucideIcons[iconName] || LucideIcons.Cloud;
+  const IconComponent = LucideIcons[iconName] || LucideIcons.Cloud;
 
   const weatherStats = [
     {
       icon: Eye,
       label: "Visibility",
       value: `${(weatherData.visibility / 1000).toFixed(1)} km`,
-      color: "text-cyan-300",
+      color: "text-cyan-400",
     },
     {
       icon: Wind,
       label: "Wind Speed",
       value: `${weatherData.wind.speed.toFixed(1)} m/s`,
-      color: "text-emerald-300",
+      color: "text-green-400",
+    },
+    {
+      icon: Waves,
+      label: "Wind Direction",
+      value: `${getWindDirection(weatherData.wind.deg)}: ${weatherData.wind.deg}°`,
+      color: "text-emerald-400",
     },
     {
       icon: Droplets,
       label: "Humidity",
       value: `${weatherData.main.humidity}%`,
-      color: "text-teal-300",
+      color: "text-teal-400",
     },
     {
       icon: Gauge,
       label: "Pressure",
       value: `${weatherData.main.pressure} hPa`,
-      color: "text-purple-300",
+      color: "text-fuchsia-400",
     },
     {
       icon: Thermometer,
       label: "Feels Like",
       value: `${formatTemp(weatherData.main.feels_like, unit)}°${unit}`,
-      color: "text-blue-300",
+      color: "text-violet-400",
     },
   ];
 
@@ -60,15 +72,26 @@ function WeatherDisplay({ weatherData, unit }) {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-white">
-              Weather Condition
+              {weatherData.name}
             </h2>
-            <p className="text-sm text-white/60">Country</p>
+            <p className="text-sm text-white/60">{weatherData.sys.country}</p>
           </div>
         </div>
 
         <div className="text-right">
-          <div className="text-sm text-white/70">{/* display date */}</div>
-          <div className="text-sm text-white/50">{/* display date */}</div>
+          <div className="text-sm text-white/70">
+            {new Date(weatherData.dt * 1000).toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "short",
+              day: "numeric",
+            })}
+          </div>
+          <div className="text-sm text-white/50">
+            {new Date(weatherData.dt * 1000).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </div>
         </div>
       </header>
 
@@ -76,41 +99,49 @@ function WeatherDisplay({ weatherData, unit }) {
       <section className="mb-10 flex items-center justify-between">
         <article className="flex-1">
           <div className="mb-3 text-7xl font-bold tracking-tight text-white">
-            Temp
+            {formatTemp(weatherData.main.temp, unit)}°
+            <span className="text-4xl font-normal text-white/70">{unit}</span>
           </div>
           <div className="mb-2 text-xl font-medium text-white/90 capitalize">
-            Weather Description
+            {weatherData.weather[0].description}
           </div>
           <div className="flex items-center space-x-4 text-sm text-white/60">
-            <span>Max Temp</span>
-            <span>Min Temp</span>
+            <span>Max: {formatTemp(weatherData.main.temp_max, unit)}°</span>
+            <span>Min: {formatTemp(weatherData.main.temp_min, unit)}°</span>
           </div>
         </article>
 
-        <article className="transform text-white/90 transition-transform duration-100 hover:scale-110">
+        <article className="transform cursor-pointer text-white/90 transition-transform duration-200 ease-in-out hover:scale-110">
           {/* display dynamic icons */}
+          <IconComponent size="100" className="drop-shadow-2xl" />
         </article>
       </section>
 
       {/* weather data grid */}
-      <section className="grid-cold-2 mb-6 grid gap-4 lg:grid-cols-3">
+      <section className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3">
         {/* map method logic */}
-        <article className="group rounded-2xl bg-white/5 p-4 backdrop-blur-sm transition-all duration-300 hover:bg-white/10">
-          <div className="mb-2 flex items-center space-x-3">
-            <div
-              className={`rounded-full bg-white/10 p-2 transition-all group-hover:bg-white/20`}
-            >
-              {/* dynamic icons */}
-            </div>
+        {weatherStats.map((stat, index) => (
+          <article
+            key={index}
+            className="group cursor-pointer rounded-2xl bg-white/5 p-4 backdrop-blur-sm transition-all duration-300 hover:bg-white/10"
+          >
+            <div className="mb-2 flex items-center space-x-3">
+              <div
+                className={`rounded-full bg-white/10 p-2 transition-all group-hover:bg-white/20`}
+              >
+                {/* dynamic icons */}
+                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              </div>
 
-            <span className="text-sm font-medium text-white/70">
-              Stats Label
-            </span>
-          </div>
-          <div className="pl-11 text-lg font-semibold text-white">
-            Stats Value
-          </div>
-        </article>
+              <span className="text-sm font-medium text-white/70">
+                {stat.label}
+              </span>
+            </div>
+            <div className="pl-11 text-lg font-semibold text-white">
+              {stat.value}
+            </div>
+          </article>
+        ))}
       </section>
 
       {/* sun rise/set time */}
@@ -126,6 +157,7 @@ function WeatherDisplay({ weatherData, unit }) {
 
           <div className="pl-11 text-lg font-semibold text-white">
             {/* dynamic content */}
+            {formatTime(weatherData.sys.sunrise)}
           </div>
         </article>
 
@@ -140,6 +172,7 @@ function WeatherDisplay({ weatherData, unit }) {
 
           <div className="pl-11 text-lg font-semibold text-white">
             {/* dynamic content */}
+            {formatTime(weatherData.sys.sunset)}
           </div>
         </article>
       </section>
