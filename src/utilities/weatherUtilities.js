@@ -19,6 +19,27 @@ export const getWeatherIcon = (weather) => {
   return iconMap[weather.main] || "Cloud";
 };
 
+export const getBgImage = (currentWeather) => {
+  const bgMap = {
+    Clear: "/sunny.jpg",
+    Clouds: "/cloudy.jpg",
+    Rain: "/stormy.jpg",
+    Drizzle: "/rainy.jpg",
+    Thunderstorm: "/thunder.jpg",
+    Snow: "/snowy.jpg",
+    Mist: "/misty.jpg",
+    Fog: "/foggy.jpg",
+    Haze: "/misty.jpg",
+    Dust: "/windy.jpg",
+    Sand: "/overcast.jpg",
+    Ash: "/overcast.jpg",
+    Squall: "/windy.jpg",
+    Tornado: "/tornado.png",
+  };
+
+  return bgMap[currentWeather?.weather[0].main];
+};
+
 export const formatTemp = (temp, unit) => {
   if (unit === "F") {
     return Math.round(temp * (9 / 5) + 32);
