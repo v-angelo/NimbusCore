@@ -32,8 +32,8 @@ function App() {
     <div className="relative min-h-screen overflow-hidden">
       {/* background images */}
       <BgImages currentWeather={currentWeather} />
-      <div className="absolute inset-0 bg-linear-to-br from-blue-900/40 via-purple-900/20 to-indigo-900/30"></div>
-      <div className="absolute inset-0 bg-black/10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-blue-900/30 via-purple-900/20 to-indigo-900/30"></div>
+      <div className="absolute inset-0 bg-black/20"></div>
 
       {/* content */}
       <main className="relative z-10 container mx-auto min-h-screen px-4 py-8">
